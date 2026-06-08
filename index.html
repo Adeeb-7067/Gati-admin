@@ -9,9 +9,50 @@
     />
     <meta name="theme-color" content="#6C63FF" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    />
     <title>GATI Admin · Logistics Platform</title>
+    <script>
+      (function () {
+        try {
+          var p = JSON.parse(localStorage.getItem("gati-ui-preferences") || "{}");
+          var r = document.documentElement;
+          var colors = {
+            violet: ["oklch(0.56 0.24 285)", "oklch(0.955 0.04 285)"],
+            blue: ["oklch(0.55 0.20 250)", "oklch(0.955 0.04 250)"],
+            teal: ["oklch(0.58 0.14 185)", "oklch(0.955 0.04 185)"],
+            green: ["oklch(0.58 0.17 152)", "oklch(0.955 0.04 152)"],
+            orange: ["oklch(0.68 0.18 55)", "oklch(0.955 0.04 55)"],
+            rose: ["oklch(0.58 0.22 15)", "oklch(0.955 0.04 15)"],
+          };
+          var c =
+            p.primaryColor === "custom" && p.customPrimaryHex
+              ? [p.customPrimaryHex, p.customPrimaryHex]
+              : colors[p.primaryColor] || colors.violet;
+          r.style.setProperty("--primary", c[0]);
+          r.style.setProperty("--ring", c[0]);
+          if (p.textSize) r.dataset.textSize = p.textSize;
+          if (p.radius) r.dataset.radius = p.radius;
+          if (p.density) r.dataset.density = p.density;
+          if (p.sidebarCompact)
+            (r.dataset.sidebarCompact = "true"), r.style.setProperty("--sidebar-width", "76px");
+          if (p.reducedMotion) r.dataset.reducedMotion = "true";
+          var t = p.theme || "light";
+          if (
+            t === "dark" ||
+            (t === "system" && matchMedia("(prefers-color-scheme:dark)").matches)
+          )
+            r.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
-    <!-- TanStack Start SSR hydrates the full document at runtime -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
